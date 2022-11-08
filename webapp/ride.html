@@ -20,9 +20,22 @@
 
 <body>
 
+    <div class="navbar">
+        <a href="#home">Home</a>
+        <div class="dropdown">
+          <button class="dropbtn">Requests
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="#">New Request</a>
+            <a href="#">Edit Request</a>
+          </div>
+        </div>
+      </div> 
+
     <div class="info panel panel-default">
         <div class="panel-heading">
-            <button id="request" class="btn btn-primary">Upload</button>
+            <button id="request" class="btn btn-primary">Create request</button>
             <div class="dropdown pull-right">
                 <button id="accountLink" class="btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Account <span class="caret"></span>
