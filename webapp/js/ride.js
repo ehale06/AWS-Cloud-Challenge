@@ -1,169 +1,121 @@
-/*global WildRydes _config AmazonCognitoIdentity AWSCognito*/
+/*global WildRydes _config*/
 
 var WildRydes = window.WildRydes || {};
+WildRydes.map = WildRydes.map || {};
 
-(function scopeWrapper($) {
-    var signinUrl = '/signin.html';
-
-    var poolData = {
-        UserPoolId: _config.cognito.userPoolId,
-        ClientId: _config.cognito.userPoolClientId
-    };
-
-    var userPool;
-
-    if (!(_config.cognito.userPoolId &&
-          _config.cognito.userPoolClientId &&
-          _config.cognito.region)) {
-        $('#noCognitoMessage').show();
-        return;
-    }
-
-    userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-    if (typeof AWSCognito !== 'undefined') {
-        AWSCognito.config.region = _config.cognito.region;
-    }
-
-    WildRydes.signOut = function signOut() {
-        userPool.getCurrentUser().signOut();
-    };
-
-    WildRydes.authToken = new Promise(function fetchCurrentAuthToken(resolve, reject) {
-        var cognitoUser = userPool.getCurrentUser();
-
-        if (cognitoUser) {
-            cognitoUser.getSession(function sessionCallback(err, session) {
-                if (err) {
-                    reject(err);
-                } else if (!session.isValid()) {
-                    resolve(null);
-                } else {
-                    resolve(session.getIdToken().getJwtToken());
-                }
-            });
+(function rideScopeWrapper($) {
+    var authToken;
+    WildRydes.authToken.then(function setAuthToken(token) {
+        if (token) {
+            authToken = token;
         } else {
-            resolve(null);
+            window.location.href = '/signin.html';
         }
+    }).catch(function handleTokenError(error) {
+        alert(error);
+        window.location.href = '/signin.html';
     });
-
-
-    /*
-     * Cognito User Pool functions
-     */
-
-    function register(email, password, onSuccess, onFailure) {
-        var dataEmail = {
-            Name: 'email',
-            Value: email
-        };
-        var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
-
-        userPool.signUp(email, password, [attributeEmail], null,
-            function signUpCallback(err, result) {
-                if (!err) {
-                    onSuccess(result);
-                } else {
-                    onFailure(err);
+    function requestUnicorn(pickupLocation) {
+        $.ajax({
+            method: 'POST',
+            url: _config.api.invokeUrl + '/ride',
+            headers: {
+                Authorization: authToken
+            },
+            data: JSON.stringify({
+                PickupLocation: {
+                    Latitude: pickupLocation.latitude,
+                    Longitude: pickupLocation.longitude
                 }
-            }
-        );
-    }
-
-    function signin(email, password, onSuccess, onFailure) {
-        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-            Username: email,
-            Password: password
-        });
-
-        var cognitoUser = createCognitoUser(email);
-        cognitoUser.authenticateUser(authenticationDetails, {
-            onSuccess: onSuccess,
-            onFailure: onFailure
-        });
-    }
-
-    function verify(email, code, onSuccess, onFailure) {
-        createCognitoUser(email).confirmRegistration(code, true, function confirmCallback(err, result) {
-            if (!err) {
-                onSuccess(result);
-            } else {
-                onFailure(err);
+            }),
+            contentType: 'application/json',
+            success: completeRequest,
+            error: function ajaxError(jqXHR, textStatus, errorThrown) {
+                console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
+                console.error('Response: ', jqXHR.responseText);
+                alert('An error occured when requesting your unicorn:\n' + jqXHR.responseText);
+                alert('authToken = ' + authToken)
+                alert('URL = ' + _config.api.invokeUrl + '/ride')
+                alert('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
+                var output = '';
+                for (property in jqXHR) {
+                output += property + ': ' + object[property]+'; ';
+                }
+                console.log(output);
+                alert("Data = " + output)
             }
         });
     }
 
-    function createCognitoUser(email) {
-        return new AmazonCognitoIdentity.CognitoUser({
-            Username: email,
-            Pool: userPool
+    function completeRequest(result) {
+        var unicorn;
+        var pronoun;
+        console.log('Response received from API: ', result);
+        unicorn = result.Unicorn;
+        pronoun = unicorn.Gender === 'Male' ? 'his' : 'her';
+        displayUpdate(unicorn.Name + ', your ' + unicorn.Color + ' unicorn, is on ' + pronoun + ' way.');
+        animateArrival(function animateCallback() {
+            displayUpdate(unicorn.Name + ' has arrived. Giddy up!');
+            WildRydes.map.unsetLocation();
+            $('#request').prop('disabled', 'disabled');
+            $('#request').text('Upload Excel');
         });
     }
 
-    /*
-     *  Event Handlers
-     */
-
+    // Register click handler for #request button
     $(function onDocReady() {
-        $('#signinForm').submit(handleSignin);
-        $('#registrationForm').submit(handleRegister);
-        $('#verifyForm').submit(handleVerify);
+        $('#request').click(handleRequestClick);
+        $('#signOut').click(function() {
+            WildRydes.signOut();
+            alert("You have been signed out.");
+            window.location = "signin.html";
+        });
+        $(WildRydes.map).on('pickupChange', handlePickupChanged);
+
+        WildRydes.authToken.then(function updateAuthMessage(token) {
+            if (token) {
+                displayUpdate('You are authenticated. Click to see your <a href="#authTokenModal" data-toggle="modal">auth token</a>.');
+                $('.authToken').text(token);
+            }
+        });
+
+        if (!_config.api.invokeUrl) {
+            $('#noApiMessage').show();
+        }
     });
 
-    function handleSignin(event) {
-        var email = $('#emailInputSignin').val();
-        var password = $('#passwordInputSignin').val();
-        event.preventDefault();
-        signin(email, password,
-            function signinSuccess() {
-                console.log('Successfully Logged In');
-                window.location.href = 'ride.html';
-            },
-            function signinError(err) {
-                alert(err);
-            }
-        );
+    function handlePickupChanged() {
+        var requestButton = $('#request');
+        requestButton.text('Request Unicorn');
+        requestButton.prop('disabled', false);
     }
 
-    function handleRegister(event) {
-        var email = $('#emailInputRegister').val();
-        var password = $('#passwordInputRegister').val();
-        var password2 = $('#password2InputRegister').val();
-
-        var onSuccess = function registerSuccess(result) {
-            var cognitoUser = result.user;
-            console.log('user name is ' + cognitoUser.getUsername());
-            var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
-            if (confirmation) {
-                window.location.href = 'verify.html';
-            }
-        };
-        var onFailure = function registerFailure(err) {
-            alert(err);
-        };
+    function handleRequestClick(event) {
+        var pickupLocation = WildRydes.map.selectedPoint;
         event.preventDefault();
+        requestUnicorn(pickupLocation);
+    }
 
-        if (password === password2) {
-            register(email, password, onSuccess, onFailure);
+    function animateArrival(callback) {
+        var dest = WildRydes.map.selectedPoint;
+        var origin = {};
+
+        if (dest.latitude > WildRydes.map.center.latitude) {
+            origin.latitude = WildRydes.map.extent.minLat;
         } else {
-            alert('Passwords do not match');
+            origin.latitude = WildRydes.map.extent.maxLat;
         }
+
+        if (dest.longitude > WildRydes.map.center.longitude) {
+            origin.longitude = WildRydes.map.extent.minLng;
+        } else {
+            origin.longitude = WildRydes.map.extent.maxLng;
+        }
+
+        WildRydes.map.animate(origin, dest, callback);
     }
 
-    function handleVerify(event) {
-        var email = $('#emailInputVerify').val();
-        var code = $('#codeInputVerify').val();
-        event.preventDefault();
-        verify(email, code,
-            function verifySuccess(result) {
-                console.log('call result: ' + result);
-                console.log('Successfully verified');
-                alert('Verification successful. You will now be redirected to the login page.');
-                window.location.href = signinUrl;
-            },
-            function verifyError(err) {
-                alert(err);
-            }
-        );
+    function displayUpdate(text) {
+        $('#updates').append($('<li>' + text + '</li>'));
     }
 }(jQuery));
