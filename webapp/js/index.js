@@ -6,8 +6,17 @@ window.onload= function(){
     }
 
     function form1() {
-            document.getElementById("form1").toggle(500);
+            document.getElementById("form1").style.display="block";
         }
+
+    if (form1.style.display == "none") {
+
+        form1.style.display == 'block';
+
+    } else {
+
+        form1.style.display ='none';
+    }
 
 
 //window.onload= function(){
