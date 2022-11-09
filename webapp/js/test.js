@@ -1,5 +1,5 @@
 <script type="text/javascript">
-function myFunction() {
+function myFunction(button) {
     <button id="request" class="btn btn-primary">New Request</button>
 }
 function myFunction2() {
