@@ -10,10 +10,9 @@
         //this hides the form
         //form.style.display = 'none';
     //}
-<script>
+
 $(document).ready(function(){
-    $('btn1').click(function(){
-        $('form1').toggle(500);
+    $('#btn1').click(function(){
+        $('#form1').toggle(500);
     })
 });
-</script>
