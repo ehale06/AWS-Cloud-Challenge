@@ -1,10 +1,10 @@
 const btn = document.getElementById('btn1');
 
 window.onload= function(){
-    btn.addEventListener('click', () => {
+    //btn.addEventListener('click', () => {
         document.getElementById('form1').style.display="none";
-    })
-}
+    }
+
     function form1() {
             document.getElementById("form1").style.display="block";
         }
