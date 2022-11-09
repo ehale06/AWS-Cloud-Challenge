@@ -7,23 +7,6 @@ const AWS = require('aws-sdk');
 
 const ddb = new AWS.DynamoDB.DocumentClient();
 
-//const fleet = [
-    {
-        Name: 'Bucephalus',
-        Color: 'Golden',
-        Gender: 'Male',
-    },
-    {
-        Name: 'Shadowfax',
-        Color: 'White',
-        Gender: 'Male',
-    },
-    {
-        Name: 'Rocinante',
-        Color: 'Yellow',
-        Gender: 'Female',
-    },
-//];
 
 exports.handler = (event, context, callback) => {
     if (!event.requestContext.authorizer) {
