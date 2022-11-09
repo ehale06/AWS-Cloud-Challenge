@@ -20,26 +20,33 @@
 
 <body>
 
-    <html>
         <head>
           <title>Welcome to the Zodiac Application -- Created by Team 5</title>
         </head>
         <body>
           <p>Create a new request to upload an excel file, or edit an existing request</p>
-          <button onclick="myFunction()">Click me!</button>
+          <button onclick="myFunction()" class="btn btn-primary">New Request</button>
           <p id="demo"></p>
           <script>
             function myFunction() {
-              document.getElementById("demo").innerHTML = "Hello Dear Visitor!</br> We are happy that you've chosen our website to learn programming languages. We're sure you'll become one of the best programmers in your country. Good luck to you!";
+              document.getElementById("demo").innerHTML = 
+              <div class="file-search-button">
+                <label for="file-upload" class="custom-file-upload">
+                    <i class="fa fa-search"></i>Browse for a file
+                    </label>
+                    <input id="file-upload" type="file"/>
+                </div>
+
             }
           </script>
         </body>
-      </html>
+
+</body>
 
     <div class="info panel panel-default">
         <div class="panel-heading">
             <div class="dropdown pull-right">
-                <button id="accountLink" class="btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button id="accountLink" class="btn btn-primary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Account <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="accountLink">
@@ -113,6 +120,7 @@
     <script src="js/esri-map.js"></script>
     <script src="js/ride.js"></script>
     <script src="js/test.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
