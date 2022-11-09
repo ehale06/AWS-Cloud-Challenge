@@ -27,22 +27,14 @@
     <div class = "section">
         <body>
           <p>Create a new request to upload an excel file, or edit an existing request</p>
-          <button onclick="myFunction()" class="btn btn-primary">New Request</button>
-          <p id="demo"></p>
-          <script>
-            function myFunction() {
-              document.getElementById("demo").innerHTML = "test";
-            }
-          </script>
+          <button id="btn1" class="btn btn-primary">New Request</button>
+        
+        <form id="form1">
+            <input type="file" id="myFile"> <br />
+            <input type="submit" value="submit" />
+        </form>
 
-          <button onclick="myFunction2()" class="btn btn-primary">Edit Request</button>
-          <p id="demo2"></p>
-          <script>
-
-            function myFunction2() {
-
-            }
-            </script>
+        <script src="index.js"></script>
         </body>
     </div>
 </body>
