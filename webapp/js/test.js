@@ -1,5 +1,8 @@
 <script type="text/javascript">
-function addMoreStuff(button) {
+function myFunction() {
     <button id="request" class="btn btn-primary">New Request</button>
+}
+function myFunction2() {
+    <button id="request" class="btn btn-primary">Edit Request</button>
 }
 </script>
