@@ -6,7 +6,7 @@ window.onload= function(){
     }
 
     function form1() {
-            document.getElementById("form1").style.display="block";
+            document.getElementById("form1").toggle(500);
         }
 
 
