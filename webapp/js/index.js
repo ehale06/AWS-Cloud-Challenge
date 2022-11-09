@@ -1,18 +1,24 @@
-//const btn = document.getElementById('btn1');
+const btn = document.getElementById('btn1');
 
-//btn.addEventListener('click', () => {
-    //const form = document.getElementById('form1');
+windown.onload=function(){
 
-    //if(form.style.display == 'none') {
+    btn.addEventListener('click', () => {
+        const form = document.getElementById('form1').style.display="none";
+})
+
+    if(form.style.display == 'none') {
         //this shows the form
         //form.style.display = 'block';
-    //} else {
+    } else {
         //this hides the form
         //form.style.display = 'none';
-    //}
+    }
+};
 
-$(document).ready(function(){
-    $('#btn1').click(function(){
-        $('#form1').toggle(500);
-    })
-});
+//window.onload= function(){
+   // $(document).ready(function(){
+      //  $('btn1').click(function(){
+      //   $('form1').toggle(500);
+      //  })
+   // })
+//};
