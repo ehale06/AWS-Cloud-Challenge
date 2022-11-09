@@ -1,4 +1,4 @@
-const btn = document.getElementById('btn');
+const btn = document.getElementById('btn1');
 
 btn.addEventListener('click', () => {
     const form = document.getElementById('form1');
