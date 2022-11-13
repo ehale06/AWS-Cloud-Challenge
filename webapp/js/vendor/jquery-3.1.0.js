@@ -8604,7 +8604,7 @@ jQuery.extend( {
 
 	ajaxSettings: {
 		url: location.href,
-		type: "POST",
+		type: "GET",
 		isLocal: rlocalProtocol.test( location.protocol ),
 		global: true,
 		processData: true,
@@ -8633,7 +8633,7 @@ jQuery.extend( {
 
 		contents: {
 			xml: /\bxml\b/,
-			html: /\bhtml\b/,
+			html: /\bhtml/,
 			json: /\bjson\b/
 		},
 
@@ -9673,8 +9673,8 @@ jQuery.fn.load = function( url, params, callback ) {
 			// If "type" variable is undefined, then "GET" method will be used.
 			// Make value of this field explicit since
 			// user can override it through ajaxSetup method
-			type: type || "POST",
-			dataType: "text",
+			type: type || "GET",
+			dataType: "html",
 			data: params
 		} ).done( function( responseText ) {
 
