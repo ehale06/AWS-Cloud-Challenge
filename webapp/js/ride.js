@@ -15,14 +15,14 @@ WildRydes.map = WildRydes.map || {};
         alert(error);
         window.location.href = '/signin.html';
     });
-    function requestUnicorn(pickupLocation) {
+    function form1(form1) {
         $.ajax({
             method: 'POST',
             url: _config.api.invokeUrl + '/uploadHtmlAPI/',
             headers: {
                 Authorization: authToken
             },
-            data: JSON.stringify(body),
+            data: JSON.stringify,
             contentType: 'application/json',
             success: completeRequest,
             error: function ajaxError(jqXHR, textStatus, errorThrown) {
