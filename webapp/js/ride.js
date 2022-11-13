@@ -18,12 +18,11 @@ WildRydes.map = WildRydes.map || {};
     function requestUnicorn(pickupLocation) {
         $.ajax({
             method: 'POST',
-            url: _config.api.invokeUrl + '/uploadHtmlAPI',
+            url: _config.api.invokeUrl + '/uploadHtmlAPI/',
             headers: {
                 Authorization: authToken
             },
-            data: JSON.stringify
-            ,
+            data: JSON.stringify,
             contentType: 'application/json',
             success: completeRequest,
             error: function ajaxError(jqXHR, textStatus, errorThrown) {
@@ -31,7 +30,7 @@ WildRydes.map = WildRydes.map || {};
                 console.error('Response: ', jqXHR.responseText);
                 alert('An error occured when requesting your unicorn:\n' + jqXHR.responseText);
                 alert('authToken = ' + authToken)
-                alert('URL = ' + _config.api.invokeUrl + '/ride')
+                alert('URL = ' + _config.api.invokeUrl + '/uploadHtmlAPI/')
                 alert('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
                 var output = '';
                 for (property in jqXHR) {
