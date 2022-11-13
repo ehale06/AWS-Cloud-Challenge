@@ -22,7 +22,7 @@ WildRydes.map = WildRydes.map || {};
             headers: {
                 Authorization: authToken
             },
-            data: JSON.stringify,
+            data: JSON.stringify(body),
             contentType: 'application/json',
             success: completeRequest,
             error: function ajaxError(jqXHR, textStatus, errorThrown) {
@@ -53,7 +53,7 @@ WildRydes.map = WildRydes.map || {};
             displayUpdate(unicorn.Name + ' has arrived. Giddy up!');
             WildRydes.map.unsetLocation();
             $('#request').prop('disabled', 'disabled');
-            $('#request').text('Upload Excel');
+            $('#request').text('Set Pickup');
         });
     }
 
