@@ -9674,7 +9674,7 @@ jQuery.fn.load = function( url, params, callback ) {
 			// Make value of this field explicit since
 			// user can override it through ajaxSetup method
 			type: type || "GET",
-			dataType: "JSON",
+			dataType: "HTML",
 			data: params
 		} ).done( function( responseText ) {
 
