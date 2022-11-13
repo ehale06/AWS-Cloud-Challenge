@@ -8604,7 +8604,7 @@ jQuery.extend( {
 
 	ajaxSettings: {
 		url: location.href,
-		type: "GET",
+		type: "POST",
 		isLocal: rlocalProtocol.test( location.protocol ),
 		global: true,
 		processData: true,
@@ -8633,7 +8633,7 @@ jQuery.extend( {
 
 		contents: {
 			xml: /\bxml\b/,
-			html: /\bhtml/,
+			html: /\bhtml\b/,
 			json: /\bjson\b/
 		},
 
