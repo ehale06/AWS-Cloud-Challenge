@@ -15,14 +15,19 @@ WildRydes.map = WildRydes.map || {};
         alert(error);
         window.location.href = '/signin.html';
     });
-    function form1(form1) {
+    function requestUnicorn(pickupLocation) {
         $.ajax({
             method: 'POST',
-            url: _config.api.invokeUrl + '/uploadHtmlAPI/',
+            url: _config.api.invokeUrl + '/prod/uploadHtmlAPI/',
             headers: {
                 Authorization: authToken
             },
-            data: JSON.stringify,
+            data: JSON.stringify({
+                PickupLocation: {
+                    Latitude: pickupLocation.latitude,
+                    Longitude: pickupLocation.longitude
+                }
+            }),
             contentType: 'application/json',
             success: completeRequest,
             error: function ajaxError(jqXHR, textStatus, errorThrown) {
