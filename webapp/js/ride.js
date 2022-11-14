@@ -18,31 +18,25 @@ WildRydes.map = WildRydes.map || {};
     function requestUnicorn(pickupLocation) {
         $.ajax({
             method: 'POST',
-            url: _config.api.invokeUrl + '/v1/uploadHtmlAPI/',
+            url: "https://ulr3ll7755.execute-api.us-east-1.amazonaws.com/v1/uploadHtmlAPI",
             headers: {
-                Authorization: authToken
+                Authorization: authToken,
+                "Accept": "*/*"
             },
-            data: JSON.stringify({
-                PickupLocation: {
-                    Latitude: pickupLocation.latitude,
-                    Longitude: pickupLocation.longitude
-                }
-            }),
-            contentType: 'application/json',
+            contentType: 'multipart/form-data',
+            data: formData,
+            dataType: "json",
+            processData: false,
             success: completeRequest,
             error: function ajaxError(jqXHR, textStatus, errorThrown) {
-                console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
+                console.error('Error: ', textStatus, ', Details: ', errorThrown);
                 console.error('Response: ', jqXHR.responseText);
-                alert('An error occured when requesting your unicorn:\n' + jqXHR.responseText);
-                alert('authToken = ' + authToken)
-                alert('URL = ' + _config.api.invokeUrl + '/uploadHtmlAPI/')
-                alert('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
-                var output = '';
-                for (property in jqXHR) {
-                output += property + ': ' + object[property]+'; ';
+                console.log("Status: " + jqXHR.status);
+                if (jqXHR.status == 401 || jqXHR.status == 403) {
+                    //redirectToLogin();
+                } else {
+                    alert('An error occured:\n' + jqXHR.responseText);
                 }
-                console.log(output);
-                alert("Data = " + output)
             }
         });
     }
