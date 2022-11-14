@@ -18,7 +18,7 @@ WildRydes.map = WildRydes.map || {};
     function requestUnicorn(pickupLocation) {
         $.ajax({
             method: 'POST',
-            url: "https://ulr3ll7755.execute-api.us-east-1.amazonaws.com/v1/uploadHtmlAPI",
+            url: "https://ulr3ll7755.execute-api.us-east-1.amazonaws.com/v1/uploadHtmlAPI/",
             headers: {
                 Authorization: authToken,
                 "Accept": "*/*"
