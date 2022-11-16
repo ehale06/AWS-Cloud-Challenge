@@ -18,12 +18,12 @@ WildRydes.map = WildRydes.map || {};
     function requestUnicorn(pickupLocation) {
         $.ajax({
             method: 'POST',
-            url: "https://ulr3ll7755.execute-api.us-east-1.amazonaws.com/v1/uploadHtmlAPI/",
+            url: "https://781xhgua9g.execute-api.us-east-1.amazonaws.com/default/zodiac-upload",
             headers: {
                 Authorization: authToken,
-                "Accept": "*/*"
+                "Accept": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             },
-            contentType: 'multipart/form-data',
+            contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             data: formData,
             dataType: "json",
             processData: false,
